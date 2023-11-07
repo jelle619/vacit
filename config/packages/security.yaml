@@ -5,6 +5,14 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         users_in_memory: { memory: null }
+        app_candidate_provider:
+            entity:
+                class: App\Entity\Candidate
+                property: email
+        app_employer_provider:
+            entity:
+                class: App\Entity\Employer
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
