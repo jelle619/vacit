@@ -16,9 +16,14 @@ framework:
             # sync: 'sync://'
 
         routing:
-            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
-            Symfony\Component\Notifier\Message\ChatMessage: async
-            Symfony\Component\Notifier\Message\SmsMessage: async
+
+            # Uncomment to send messages asyncronously
+            # For asynchronous messages to be sent out, you need to have a database and run the worker:
+            # php bin/console messenger:consume async
+
+            # Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            # Symfony\Component\Notifier\Message\ChatMessage: async
+            # Symfony\Component\Notifier\Message\SmsMessage: async
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
