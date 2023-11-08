@@ -54,7 +54,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
-            $this->addFlash('success', 'Account aangemaakt, volg de activatielink die we naar je e-mailadres gestuurd hebben op je registratie te voltooien.');
+            $this->addFlash('success', 'Account aangemaakt, volg de activatielink die we naar je e-mailadres gestuurd hebben om je registratie te voltooien.');
             return $this->redirectToRoute('app_home');
         }
 
