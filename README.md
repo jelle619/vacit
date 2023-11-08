@@ -2,7 +2,7 @@
 Vac!T is een simpele vacature website. Voor meer informatie, zie de documentatie in `/docs`.
 
 ## Development
-Zorg dat Symfony geïnstalleerd is en gereed voor gebruik. Daarna kan je een kopie maken van de repository. Zorg dat je environment variables toevoegt aan een `.env` bestand in de root van het project voordat je de Symfony development server start.
+Zorg dat Symfony geïnstalleerd is en gereed voor gebruik. Daarna kan je een kopie maken van de repository. Zorg dat je environment variables toevoegt aan een `.env` bestand in de root van het project voordat je de Symfony development server start. Neem het volgende als voorbeeld.
 
 ```
 ###> symfony/framework-bundle ###
