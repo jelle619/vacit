@@ -5,6 +5,10 @@ Vac!T is een simpele vacature website. Voor meer informatie, zie de documentatie
 Zorg dat Symfony geïnstalleerd is en gereed voor gebruik. Daarna kan je een kopie maken van de repository. Zorg dat je environment variables toevoegt aan een `.env` bestand in de root van het project voordat je de Symfony development server start.
 
 ```
+###> app/vacit ###
+EMPLOYER_DEFAULT_PASSWORD=password
+###< app/vacit ###
+
 ###> symfony/framework-bundle ###
 APP_ENV=dev
 APP_SECRET=a92085089q621c4759742f352b6fdef9
