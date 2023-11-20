@@ -1,0 +1,49 @@
+<style>
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--gray);
+        padding: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .nav__branding {;
+        height: 100%;
+        max-height: 96px;
+        box-sizing: border-box;
+    }
+
+    .nav__item-list {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        align-items: flex-end;
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+        height: 100%;
+        max-height: 96px;
+    }
+
+    .nav__item-list__item {
+        color: var(--white);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+</style>
+
+<div class="nav">
+    <a href="/"><img class="nav__branding" src="/images/logo_alt.png" alt="Vac!T Logo"></a>
+    <div class="nav__item-list">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a class="nav__item-list__item" href="/account">Profiel</a>
+        <a class="nav__item-list__item" href="/submission/list">Sollicitaties</a>
+        <a class="nav__item-list__item" href="/logout">Uitloggen</a>
+    {% else %}
+        <a class="nav__item-list__item" href="/register">Registreren</a>
+        <a class="nav__item-list__item" href="/login">Inloggen</a>
+    {% endif %}
+    </div>
+</div>

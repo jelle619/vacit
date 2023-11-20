@@ -4,17 +4,23 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="content">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <h1>Hey {{ app.user.firstName }}!</h1>
+    {% else %}
+    <h1>Hallo</h1>
+    {% endif %}
 
-    This friendly message is coming from:
+
+    <p>Welkom op onze website. Zie de onderstaande lijst voor uitgelichte vacaturen.</p>
+
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/jelle/Documents/GitHub/vacit/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/jelle/Documents/GitHub/vacit/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
+    {% for vacancy in vacancies %}
+        <li><a href="/vacancy/{{ vacancy.id }}">{{ vacancy.name }}</a> bij {{ vacancy.employer.company.name }}, geplaatst op {{ vacancy.date|date('d/m/Y') }}.</li>
+        {{ vacancy.summary }}
+    {% endfor %}
     </ul>
 </div>
 {% endblock %}

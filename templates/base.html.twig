@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <meta name="viewport" content="width=device-width">
         {% block stylesheets %}
         {% endblock %}
 
@@ -11,18 +12,104 @@
         {% endblock %}
     </head>
     <body>
+        <style>
+            :root {
+                /* fonts */
+                --titles: "bebas-neue";
+                --headings: "roboto-condensed";
+                --regular: "Arial";
+                /* colors */
+                --gray: #333333;
+                --orange: #F15A24;
+                --white: #FFF;
+                --black: #000;
+            }
+
+            @font-face {
+                font-family: "bebas-neue";
+                src: 
+                    url("/fonts/bebas_neue/bebas_neue.woff2") format("woff2"),
+                    url("/fonts/bebas_neue/bebas_neue.woff") format("woff");
+            }
+
+            @font-face {
+                font-family: "roboto-condensed";
+                src: 
+                    url("/fonts/roboto_condensed/roboto_condensed.woff2") format("woff2"),
+                    url("/fonts/roboto_condensed/roboto_condensed.woff") format("woff");
+            }
+
+            html {
+
+            }
+
+            html, body {
+                margin: 0;
+                padding: 0;
+                font-family: var(--regular), sans-serif;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                font-family: var(--headings), sans-serif;
+            }
+
+            .flash {
+                background-color: blue;
+                box-sizing: border-box;
+                padding: 1rem;
+                width: 100%;
+                color: var(--white);
+            }
+
+            .flash--success {
+                background-color: green;
+            }
+
+            .flash--error {
+                background-color: red;
+            }
+
+            .content {
+                margin: 0.5rem 1rem 0.5rem 1rem;
+            }
+
+            @media only screen and (min-width: 640px) { /* tailwindcss: max-sm */
+                .content {
+                    margin: 1rem 2rem 1rem 2rem; /* tailwindcss: multiply times 4 */
+                }
+            }
+
+            @media only screen and (min-width: 768px) { /* tailwindcss: max-md */
+                .content {
+                    margin: 2rem 4rem 2rem 4rem; /* tailwindcss: multiply times 4 */
+                }
+            }
+
+            @media only screen and (min-width: 1024px) { /* tailwindcss: max-lg */
+                .content {
+                    margin: 4rem 8rem 4rem 8rem; /* tailwindcss: multiply times 4 */
+                }
+            }
+        </style>
+
+        {% include 'nav.html.twig' %}
+
         {% for message in app.flashes('success') %}
-        <div>
+        <div class="flash flash--success">
             {{ message }}
         </div>
         {% endfor %}
 
-        {% for message in app.flashes('success') %}
-        <div>
+        {% for message in app.flashes('error') %}
+        <div class="flash flash--error">
             {{ message }}
         </div>
         {% endfor %}
         
-        {% block body %}{% endblock %}
+        {% block body %}
+
+        {% endblock %}
+
+        {% include 'footer.html.twig' %}
     </body>
 </html>

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SubmissionController!{% endblock %}
+
+{% block body %}
+<style>
+</style>
+
+<div class="content">
+    <h1>Sollicitatie</h1>
+    <p>Je staat op het punt te solliciteren voor de volgende vacature:</p>
+    <ul>
+        <li>Naam: {{ vacancy.name }}</li>
+        <li>Geplaatst: {{ vacancy.date|date('d/m/Y') }}</li>
+        <li>Bedrijf: {{ vacancy.employer.company.name }}</li>
+        <li>Locatie: {{ vacancy.location }}
+    </ul>
+    <p>Na het bevestigen van je sollicitatie, zal de werkgever je profiel kunnen inzien en contact met je opnemen. De sollicitatie zal verschijnen in je <a href="/submission/list">persoonlijke sollicitatielijst</a>, waar je de sollicitatie op ieder moment ongedaan zou kunnen maken.</p>
+    <p>Weet je zeker dat je je voor deze vacature wil soliciteren met je huidige profielinformatie?</p>
+    <a href="">Bevestig sollicitatie</a>
+</div>
+{% endblock %}

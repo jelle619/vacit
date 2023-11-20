@@ -1,20 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello VacancyController!{% endblock %}
+{% block title %}{{ vacancy.name }}{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+<div class="content">
+    <small>{{ vacancy.date|date('d/m/Y') }}</small>
+    <h1>{{ vacancy.name }}</h1>
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/jelle/Documents/GitHub/vacit/src/Controller/VacancyController.php'|file_link(0) }}">src/Controller/VacancyController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/jelle/Documents/GitHub/vacit/templates/vacancy/index.html.twig'|file_link(0) }}">templates/vacancy/index.html.twig</a></code></li>
+        <li>Niveau: {{ vacancy.level }}</li>
+        <li>Locatie: {{ vacancy.location }}</li>
+        <li>Bedrijf: {{ vacancy.employer.company.name }}</li>
     </ul>
+    <p>{{ vacancy.description }}</p>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <a href="/submission/{{ vacancy.id }}">Solliciteer direct</a>
+    {% endif %}
+
+    {% if related_vacancies != NULL %}
+    <h2>Meer vacatures van {{ vacancy.employer.company.name }}</h2>
+    {# the below for loops and if-statements should become its own function in VacancyService for additional clarity #}
+    <ul>
+    {% for vacancy in related_vacancies %}
+            <li><a href="/vacancy/{{ vacancy.id }}">{{ vacancy.name }}</a>, geplaatst op {{ vacancy.date|date('d/m/Y') }}.</li>
+            {{ vacancy.summary }}
+    {% endfor %}
+    </ul>
+    {% endif %}
+
 </div>
 {% endblock %}
