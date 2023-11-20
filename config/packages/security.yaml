@@ -17,12 +17,27 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        employer:
+            pattern: ^/employer
+            lazy: true
+            provider: app_employer_provider
+            logout:
+                path: app_employer_logout
+                target: app_home
+            login_throttling: null
+            form_login:
+                login_path: app_employer_login
+                check_path: app_employer_login
+                enable_csrf: true
+        candidate:
             lazy: true
             provider: app_candidate_provider
             user_checker: App\Security\CandidateChecker
+            logout:
+                path: app_logout
+                target: app_home
+            login_throttling: null
             form_login:
-                # "app_login" is the name of the route created previously
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
