@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use App\Entity\Employer;
-use App\Repository\CompanyRepository;
+use App\Service\CompanyService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -28,13 +28,13 @@ class ImportEmployersCommand extends Command
 {
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $userPasswordHasher;
-    private CompanyRepository $companyRepository;
+    private CompanyService $companyService;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, CompanyRepository $companyRepository)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, CompanyService $companyService)
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
-        $this->companyRepository = $companyRepository;
+        $this->companyService = $companyService;
         parent::__construct();
     }
 
@@ -44,16 +44,30 @@ class ImportEmployersCommand extends Command
             ->addArgument('document_location', InputArgument::REQUIRED, 'Location of the Excel sheet to be imported.');
     }
 
-    # Working, but the function still needs to be split up into multiple for readability.
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-
-        # BEGIN document import
-
+    
         $documentLocation = $input->getArgument('document_location');
-        $io->note(sprintf('Attempting to import spreadsheet: %s', $documentLocation));
 
+        $io->note(sprintf('Attempting to import spreadsheet: %s', $documentLocation));
+        $spreadsheet = $this->documentImport($documentLocation);
+        $io->note('Imported the spreadsheet successfully.');
+
+        $worksheet = $spreadsheet->getActiveSheet();
+        $array = $worksheet->toArray();
+
+        $indexDetermination = $this->indexDetermination($array);
+
+        $io->note(sprintf('Creating employers with default password: %s. Please change this password as soon as possible.', $_ENV['EMPLOYER_DEFAULT_PASSWORD']));
+        $this->userImport($array, $indexDetermination["companyIdIndex"], $indexDetermination["firstNameIndex"], $indexDetermination["lastNameIndex"], $indexDetermination["emailIndex"]);
+
+        $io->success(sprintf('Successfully imported %s employer(s).', strval(sizeof($array) - 1)));
+
+        return Command::SUCCESS;
+    }
+
+    protected function documentImport($documentLocation) {
         try {
             $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($documentLocation);
             $reader->setReadDataOnly(true);
@@ -62,15 +76,33 @@ class ImportEmployersCommand extends Command
             die('Error loading file: ' . $e->getMessage());
         }
 
-        $io->note('Imported the spreadsheet successfully.');
+        return $spreadsheet;
+    }
 
-        # END document import
+    protected function userImport($array, $companyIdIndex, $firstNameIndex, $lastNameIndex, $emailIndex) {
+        for ($row = 1; $row < sizeof($array); $row++) {
+            # initiate new instances
+            $user = new Employer();
+    
+            # set properties on user instance
+            $user->setCompany($this->companyService->fetchCompany($array[$row][$companyIdIndex]));
+            $user->setFirstName($array[$row][$firstNameIndex]);
+            $user->setLastName($array[$row][$lastNameIndex]);
+            $user->setEmail($array[$row][$emailIndex]);
+            $user->setPassword(
+                $this->userPasswordHasher->hashPassword(
+                    $user,
+                    $_ENV['EMPLOYER_DEFAULT_PASSWORD']
+                )
+            );
+            
+            # enter user into database
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
+    }
 
-        $worksheet = $spreadsheet->getActiveSheet();
-        $array = $worksheet->toArray();
-
-        # BEGIN index determination
-
+    protected function indexDetermination($array) {
         $companyIdIndex = NULL;
         $firstNameIndex = NULL;
         $lastNameIndex = NULL;
@@ -93,35 +125,6 @@ class ImportEmployersCommand extends Command
             }
         }
 
-        # END index determination
-
-        # BEGIN user import loop
-
-        for ($row = 1; $row < sizeof($array); $row++) {
-            # initiate new instances
-            $user = new Employer();
-            $company  = $this->companyRepository->find($array[$row][$companyIdIndex]);
-    
-            # set properties on user instance
-            $user->setCompany($company);
-            $user->setFirstName($array[$row][$firstNameIndex]);
-            $user->setLastName($array[$row][$lastNameIndex]);
-            $user->setEmail($array[$row][$emailIndex]);
-            $user->setPassword(
-                $this->userPasswordHasher->hashPassword(
-                    $user,
-                    '%env(EMPLOYER_DEFAULT_PASSWORD)%'
-                )
-            );
-            
-            # enter user into database
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-        }
-        # END user import loop
-
-        $io->success(sprintf('Successfully imported %s employer(s).', strval(sizeof($array) - 1)));
-
-        return Command::SUCCESS;
+        return array("companyIdIndex" => $companyIdIndex, "firstNameIndex" => $firstNameIndex, "lastNameIndex" => $lastNameIndex, "emailIndex" => $emailIndex);
     }
 }
