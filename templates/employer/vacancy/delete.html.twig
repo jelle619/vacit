@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EmployerController!
+{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<div class="content">
+		<h1>Vacature verwijderen</h1>
+		<p>Je staat op het punt om de volgende vacature permanent te verwijderen:</p>
+
+		<ul>
+			<li>Naam:
+				{{ vacancy.name }}</li>
+			<li>Geplaatst:
+				{{ vacancy.date|date('d/m/Y') }}</li>
+			<li>Bedrijf:
+				{{ vacancy.employer.company.name }}</li>
+			<li>Locatie:{{ vacancy.location }}
+			</li>
+		</ul>
+
+		<p>Nadat je de vacature verwijdert, zal deze verdwijnen uit je <a href="/employer/vacancy/list">persoonlijke vaccaturelijst</a>.
+		Sollicitaties van kandidaten op deze vacature zullen ook verloren gaan.</p>
+
+		<p>Weet je zeker dat je verder wilt gaan?</p>
+
+		<form method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}">
+			<input type="hidden" name="delete" value="true">
+			<button type="submit" name="submit">
+				Verwijder permanent
+			</button>
+		</form>
+	</div>
+	{% endblock %}

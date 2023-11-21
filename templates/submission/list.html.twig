@@ -1,25 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SubmissionController!{% endblock %}
+{% block title %}Hello SubmissionController!
+{% endblock %}
 
 {% block body %}
-<style>
+	<style></style>
 
-</style>
+	<div class="content">
+		<h1>Sollicitaties</h1>
 
-<div class="content">
-    <h1>Sollicitaties</h1>
+		{% if submissions == null %}
+			<p>Het lijkt erop dat je nog niet gesoliciteerd hebt. Zodra je voor een vacature soliciteert, komt dit hier te staan.</p>
+		{% else %}
+			<p>Beneden vind je een lijst met alle sollicitaties die je hebt gedaan.</p>
+			<ul>
+				{% for submission in submissions %}
+					<li>
+						<a href="/vacancy/{{ submission.vacancy.id }}">{{ submission.vacancy.name }}</a>
+						-
+						{{ submission.date|date('d/m/Y') }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
 
-    {% if submissions == null %}
-    <p>Het lijkt erop dat je nog niet gesoliciteerd hebt. Zodra je voor een vacature soliciteert, komt dit hier te staan.</p>
-    {% else %}
-    <p>Beneden vind je een lijst met alle sollicitaties die je hebt gedaan.</p>
-    <ul>
-    {% for submission in submissions %}
-        <li><a href="/vacancy/{{ submission.vacancy.id }}">{{ submission.vacancy.name }}</a> - {{ submission.date|date('d/m/Y') }}</li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-
-</div>
+	</div>
 {% endblock %}

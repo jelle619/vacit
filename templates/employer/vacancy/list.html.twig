@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EmployerController!
+{% endblock %}
+
+{% block body %}
+	<div class="content">
+		<h1>Vacatures</h1>
+		<p>Deze pagina bevat een lijst van alle vacatures die je gepubliceerd hebt.</p>
+		<ul>
+			{% for vacancy in vacancies %}
+				<li>
+					<details>
+						<summary><a href="/employer/vacancy/{{ vacancy.id }}">{{ vacancy.name }}</a></summary>
+						<ul>
+							<li>Publicatiedatum: {{ vacancy.date|date('d/m/Y') }}</li>
+							<li>Locatie: {{ vacancy.location }}</li>
+							<li><a href="/employer/vacancy/edit/{{ vacancy.id }}">Voer wijzigingen door</a></li>
+							<li><a href="/employer/vacancy/delete/{{ vacancy.id }}">Verwijder permanent</a></li>
+						</ul>
+					</details>
+				</li>
+			{% endfor %}
+		</ul>
+
+		<a href="/employer/vacancy/create">Maak een nieuwe vacature aan.</a>
+	</div>
+{% endblock %}

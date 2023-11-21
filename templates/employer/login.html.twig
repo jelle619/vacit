@@ -4,26 +4,27 @@
 {# ... #}
 
 {% block body %}
-        <div class="content">
-        <h1>Login (voor werkgevers)</h1>
-        <p>Deze loginpagina is bedoeld voor werkgevers. Ben je geen werkgever, maar een kandidaat? Ga dan naar de <a href="/login">loginpagina voor kandidaten</a>.
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+	<div class="content">
+		<h1>Login (voor werkgevers)</h1>
+		<p>Deze loginpagina is bedoeld voor werkgevers. Ben je geen werkgever, maar een kandidaat? Ga dan naar de
+			<a href="/login">loginpagina voor kandidaten</a>.
+			{% if error %}
+				<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
 
-        <form action="{{ path('app_employer_login') }}" method="post">
-            <label for="username">E-mail</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="naam@bedrijf.nl">
+			<form action="{{ path('app_employer_login') }}" method="post">
+				<label for="username">E-mail</label>
+				<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="naam@bedrijf.nl">
 
-            <label for="password">Wachtwoord</label>
-            <input type="password" id="password" name="_password" placeholder="********">
+				<label for="password">Wachtwoord</label>
+				<input type="password" id="password" name="_password" placeholder="********">
 
-            {# If you want to control the URL the user is redirected to on success
-            <input type="hidden" name="_target_path" value="/account"> #}
+				<input type="hidden" name="_target_path" value="/employer/vacancy/list">
 
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button type="submit">Log in</button>
-        </form>
-        </div>
+				<button type="submit">Log in</button>
+			</form>
+		</p>
+	</div>
 {% endblock %}

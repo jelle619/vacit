@@ -4,26 +4,29 @@
 {# ... #}
 
 {% block body %}
-        <div class="content">
-        <h1>Login</h1>
-        <p>Ben je geen kandidaat, maar een werkgever? Ga dan naar de <a href="/employer/login">loginpagina voor werkgevers</a>.
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+	<div class="content">
+		<h1>Login</h1>
+		<p>Ben je geen kandidaat, maar een werkgever? Ga dan naar de
+			<a href="/employer/login">loginpagina voor werkgevers</a>.
+			{% if error %}
+				<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
 
-        <form action="{{ path('app_login') }}" method="post">
-            <label for="username">E-mail</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="naam@provider.nl">
+			<form action="{{ path('app_login') }}" method="post">
+				<label for="username">E-mail</label>
+				<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="naam@provider.nl">
 
-            <label for="password">Wachtwoord</label>
-            <input type="password" id="password" name="_password" placeholder="********">
+				<label for="password">Wachtwoord</label>
+				<input
+				type="password" id="password" name="_password" placeholder="********">
 
-            {# If you want to control the URL the user is redirected to on success
-            <input type="hidden" name="_target_path" value="/account"> #}
+				{# If you want to control the URL the user is redirected to on success
+				            <input type="hidden" name="_target_path" value="/account"> #}
 
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button type="submit">Log in</button>
-        </form>
-        </div>
+				<button type="submit">Log in</button>
+			</form>
+		</p>
+	</div>
 {% endblock %}

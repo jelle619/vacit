@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EmployerController!
+{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<div class="content">
+		<small>{{ vacancy.date|date('d/m/Y') }}</small>
+		<h1>{{ vacancy.name }}</h1>
+		<ul>
+			<li>Niveau:
+				{{ vacancy.level }}</li>
+			<li>Locatie:
+				{{ vacancy.location }}</li>
+			<li>Bedrijf:
+				{{ vacancy.employer.company.name }}</li>
+		</ul>
+		<p>{{ vacancy.description }}</p>
+
+		<h2>Sollicitaties</h2>
+		{# the below for loops and if-statements should become its own function in VacancyService for additional clarity #}
+		{% if submissions is not empty %}
+			<ul>
+				{% for submission in submissions %}
+					<li>
+						<details>
+							<summary>{{ submission.candidate.firstName }}
+								{{ submission.candidate.lastName }},
+								{{ submission.date|date('d/m/Y') }}</summary>
+							<ul>
+								<li>{{ submission.candidate.email }}</li>
+								<li>{{ submission.candidate.birthDate|date('d/m/Y') }}</li>
+								<li>{{ submission.candidate.phoneNumber }}</li>
+								<li>{{ submission.candidate.address }},
+									{{ submission.candidate.postalCode }}
+									{{ submission.candidate.city }}</li>
+							</ul>
+							<p>{{ submission.candidate.coverLetter }}</p>
+						</details>
+					</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p>Je hebt nog geen sollicitaties ontvangen voor deze vacature.
+			{% endif %}
+
+		</div>
+	{% endblock %}

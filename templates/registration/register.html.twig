@@ -1,47 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register
+{% endblock %}
 
 {% block body %}
-    <div class="content">
-        <h1>Registeer</h1>
-        <p>Om gebruik te kunnen maken van onze services is een account benodigd. Als kandidaat kan je je registeren middels het onderstaande formulier. Werkgevers kunnen zich enkel registeren door contact met ons op te nemen: <a href="mailto:&#112;&#117;&#098;&#108;&#105;&#099;&#064;&#106;&#101;&#108;&#108;&#101;&#122;&#119;&#105;&#101;&#046;&#114;&#115;">&#112;&#117;&#098;&#108;&#105;&#099;&#064;&#106;&#101;&#108;&#108;&#101;&#122;&#119;&#105;&#101;&#046;&#114;&#115;</a>.</p>
+	<div class="content">
+		<h1>Registeer</h1>
+		<p>Om gebruik te kunnen maken van onze services is een account benodigd. Als kandidaat kan je je registeren middels het onderstaande formulier. Werkgevers kunnen zich enkel registeren door contact met ons op te nemen:
+			<a href="mailto:&#112;&#117;&#098;&#108;&#105;&#099;&#064;&#106;&#101;&#108;&#108;&#101;&#122;&#119;&#105;&#101;&#046;&#114;&#115;">&#112;&#117;&#098;&#108;&#105;&#099;&#064;&#106;&#101;&#108;&#108;&#101;&#122;&#119;&#105;&#101;&#046;&#114;&#115;</a>.</p>
 
-        {{ form_errors(registrationForm) }}
+		{{ form_errors(registrationForm) }}
 
-        {{ form_start(registrationForm) }}
-            {{ form_row(registrationForm.email, {
+		{{ form_start(registrationForm) }}
+		{{ form_row(registrationForm.email, {
                 label: 'E-mail'
             }) }}
-            {{ form_row(registrationForm.plainPassword, {
+		{{ form_row(registrationForm.plainPassword, {
                 label: 'Password'
             }) }}
-            {{ form_row(registrationForm.firstName, {
+		{{ form_row(registrationForm.firstName, {
                 label: 'Voornaam'
             }) }}
-            {{ form_row(registrationForm.lastName, {
+		{{ form_row(registrationForm.lastName, {
                 label: 'Achternaam'
             }) }}
-            {{ form_row(registrationForm.birthDate, {
+		{{ form_row(registrationForm.birthDate, {
                 label: 'Geboortedatum'
             }) }}
-            {{ form_row(registrationForm.phoneNumber, {
+		{{ form_row(registrationForm.phoneNumber, {
                 label: 'Telefoonnummer'
             }) }}
-            {{ form_row(registrationForm.address, {
+		{{ form_row(registrationForm.address, {
                 label: 'Adres'
             }) }}
-            {{ form_row(registrationForm.postalCode, {
+		{{ form_row(registrationForm.postalCode, {
                 label: 'Postcode'
             }) }}
-            {{ form_row(registrationForm.city, {
+		{{ form_row(registrationForm.city, {
                 label: 'Plaats'
             }) }}
-            {{ form_row(registrationForm.agreeTerms, {
+		{{ form_row(registrationForm.agreeTerms, {
                 label: 'Ik ga akkoord met de voorwaarden'
             }) }}
 
-            <button type="submit" class="btn">Registreer</button>
-        {{ form_end(registrationForm) }}
-    </div>
+		<button type="submit" class="btn">Registreer</button>
+		{{ form_end(registrationForm) }}
+	</div>
 {% endblock %}
