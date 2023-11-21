@@ -32,6 +32,7 @@ class AccountController extends AbstractController
     #[Route('/account', name: 'app_account')]
     public function account(Security $security, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $security->getUser();
 
         $form = $this->createFormBuilder($user)
