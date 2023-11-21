@@ -24,11 +24,11 @@ class VacancyController extends AbstractController
         $this->companyService = $companyService;
     }
 
-    #[Route('/vacancy/{id}', name: 'app_vacancy')]
-    public function vacancy($id): Response
+    #[Route('/vacancy/{vacancyId}', name: 'app_vacancy')]
+    public function vacancy($vacancyId): Response
     {
-        $vacancy = $this->vacancyService->fetchVacancy($id);
-        $relatedVacancies = $this->vacancyService->fetchRelatedVacancies($id);
+        $vacancy = $this->vacancyService->fetchVacancy($vacancyId);
+        $relatedVacancies = $this->vacancyService->fetchRelatedVacancies($vacancyId);
 
         return $this->render('vacancy/index.html.twig', [
             'controller_name' => 'VacancyController',
