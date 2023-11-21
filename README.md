@@ -2,7 +2,17 @@
 Vac!T is een simpele vacature website. Voor meer informatie, zie de documentatie in `/docs`.
 
 ## Development
-Zorg dat Symfony geïnstalleerd is en gereed voor gebruik. Daarna kan je een kopie maken van de repository. Zorg dat je environment variables toevoegt aan een `.env` bestand in de root van het project voordat je de Symfony development server start. Neem het volgende als voorbeeld.
+Zorg dat Symfony geïnstalleerd is en gereed voor gebruik. Daarna kan je een kopie maken van de repository.
+
+### Vereisten
+De vereisten voor het runnen van dit project zijn als volgt:
+
+- Een device die geschikt is voor Symfony, en waar dit al op geïnstalleerd is. Intructies zijn te vinden in de [Symfony-documentatie](https://symfony.com/download).
+- Een MySQL database. Een vergelijkbare database werkt mogelijk ook, al zijn deze niet getest. Op Windows is het opzetten van MySQL het gemakkelijst door [XAMPP te installeren](https://www.apachefriends.org/download.html).
+-  Een e-mail SMTP server. Deze is benodigd voor het versturen van bevestigingsmails wanneer een nieuw kandidaataccount geregistreerd word.
+
+### Environmental Variables
+Zorg dat je environment variables toevoegt aan een `.env` bestand in de root van het project voordat je de Symfony development server start. Neem het volgende als voorbeeld, en verander of vul aan daar waar nodig.
 
 ```
 ###> app/vacit ###
