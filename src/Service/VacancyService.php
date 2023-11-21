@@ -74,25 +74,4 @@ class VacancyService
         }
         return($array);
     }
-
-    // private function fetchPoppodium($id) {
-    //     return($this->poppodiumRepository->fetchPoppodium($id));
-    // }
-
-    // public function saveOptreden($params) {
-    //     $data = [
-    //       "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
-    //       "omschrijving" => $params["omschrijving"],
-    //       "datum" => new \DateTime($params["datum"]),
-    //       "prijs" => $params["prijs"],
-    //       "ticket_url" => $params["ticket_url"],
-    //       "afbeelding_url" => $params["afbeelding_url"],              
-    //       "poppodium" => $this->fetchPoppodium($params["poppodium_id"]),
-    //       "voorprogramma" => $this->fetchArtiest($params["voorprogramma_id"]),
-    //       "hoofdprogramma" => $this->fetchArtiest($params["hoofdprogramma_id"])
-    //     ];
-
-    //     $result = $this->optredenRepository->saveOptreden($data);
-    //     return($result);
-    // }
 }

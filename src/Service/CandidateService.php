@@ -54,24 +54,19 @@ class CandidateService
         return $this->security->getUser();
     }
 
-    // private function fetchPoppodium($id) {
-    //     return($this->poppodiumRepository->fetchPoppodium($id));
-    // }
+    public function fetchEmployerCandidate($id = null)
+    {
+        if (is_null($id)) return (null);
 
-    // public function saveOptreden($params) {
-    //     $data = [
-    //       "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
-    //       "omschrijving" => $params["omschrijving"],
-    //       "datum" => new \DateTime($params["datum"]),
-    //       "prijs" => $params["prijs"],
-    //       "ticket_url" => $params["ticket_url"],
-    //       "afbeelding_url" => $params["afbeelding_url"],              
-    //       "poppodium" => $this->fetchPoppodium($params["poppodium_id"]),
-    //       "voorprogramma" => $this->fetchArtiest($params["voorprogramma_id"]),
-    //       "hoofdprogramma" => $this->fetchArtiest($params["hoofdprogramma_id"])
-    //     ];
+        $vacancies = $this->employerRepository->find($id)->getVacancies();
+        $array = array();
 
-    //     $result = $this->optredenRepository->saveOptreden($data);
-    //     return($result);
-    // }
+        foreach ($vacancies as $vacancy) {
+            $submissions = $vacancy->getSubmissions();
+            foreach ($submissions as $submission)  {
+                array_push($array, $submission->getCandidate());
+            }
+        }
+        return($array);
+    }
 }
