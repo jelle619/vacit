@@ -53,32 +53,60 @@ class SubmissionService
         );
     }
 
-    public function fetchRecentUserSubmissions($user, $limit = null)
+    public function fetchRecentUserSubmissions($candidateId, $limit = null)
     {
-        if (is_null($limit)) return ($this->submissionRepository->createQueryBuilder('e')->where('e.candidate_id == $user')->orderBy('e.date', 'DESC')->getQuery()->getResult());
+        if (is_null($limit)) return (
+            $this->submissionRepository
+                ->createQueryBuilder('e')
+                ->where('e.candidate = ?1')
+                ->orderBy('e.date', 'DESC')
+                ->setParameter(1, $candidateId)
+                ->getQuery()
+                ->getResult());
         return (
-            $this->submissionRepository->createQueryBuilder('e')->where('e.candidate_id == $user')->orderBy('e.date', 'DESC')->setMaxResults($limit)->getQuery()->getResult()
+            $this->submissionRepository
+                ->createQueryBuilder('e')
+                ->where('e.candidate = ?1')
+                ->orderBy('e.date', 'DESC')
+                ->setMaxResults($limit)
+                ->setParameter(1, $candidateId)
+                ->getQuery()
+                ->getResult()
         );
     }
 
-    // private function fetchPoppodium($id) {
-    //     return($this->poppodiumRepository->fetchPoppodium($id));
-    // }
+    public function fetchRecentVanacySubmissions($vacancyId, $limit = null)
+    {
+        if (is_null($limit)) return (
+            $this->submissionRepository
+                ->createQueryBuilder('e')
+                ->where('e.vacancy = ?1')
+                ->orderBy('e.date', 'DESC')
+                ->setParameter(1, $vacancyId)
+                ->getQuery()
+                ->getResult());
+        return (
+            $this->submissionRepository
+                ->createQueryBuilder('e')
+                ->where('e.vacancy = ?1')
+                ->orderBy('e.date', 'DESC')
+                ->setMaxResults($limit)
+                ->setParameter(1, $vacancyId)
+                ->getQuery()
+                ->getResult()
+        );
+    }
 
-    // public function saveOptreden($params) {
-    //     $data = [
-    //       "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
-    //       "omschrijving" => $params["omschrijving"],
-    //       "datum" => new \DateTime($params["datum"]),
-    //       "prijs" => $params["prijs"],
-    //       "ticket_url" => $params["ticket_url"],
-    //       "afbeelding_url" => $params["afbeelding_url"],              
-    //       "poppodium" => $this->fetchPoppodium($params["poppodium_id"]),
-    //       "voorprogramma" => $this->fetchArtiest($params["voorprogramma_id"]),
-    //       "hoofdprogramma" => $this->fetchArtiest($params["hoofdprogramma_id"])
-    //     ];
-
-    //     $result = $this->optredenRepository->saveOptreden($data);
-    //     return($result);
-    // }
+    public function findSubmission($candidateId, $vacancyId)
+    {
+        return (
+            $this->submissionRepository
+                ->createQueryBuilder('e')
+                ->where('e.candidate = ?1 AND e.vacancy = ?2')
+                ->setParameter(1, $candidateId)
+                ->setParameter(2, $vacancyId)
+                ->getQuery()
+                ->getOneOrNullResult()
+        );
+    }
 }
