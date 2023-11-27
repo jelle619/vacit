@@ -49,12 +49,11 @@ class AccountController extends AbstractController
             ->add('imageFile', VichImageType::class, [
                 'label' => "Profielfoto",
                 'required' => false,
-                'allow_delete' => true,
+                'allow_delete' => false,
                 'delete_label' => 'Verwijder',
                 'download_label' => 'Download',
-                'download_uri' => true,
-                'image_uri' => true,
-                // 'imagine_pattern' => '...',
+                'download_uri' => false,
+                'image_uri' => false,
                 'asset_helper' => true,
             ])
             ->add('email', EmailType::class, [
@@ -68,11 +67,6 @@ class AccountController extends AbstractController
                 'first_options'  => ['label' => 'Wachtwoord'],
                 'second_options' => ['label' => 'Wachtwoord (herhaling)'],
             ])
-            // ->add('password', PasswordType::class, [
-            //     'label' => 'Wachtwoord',
-            //     'required' => true,
-            //     'empty_data' => ''
-            // ])
             ->add('birthDate', BirthdayType::class, [
                 'label' => 'Geboortedatum'
             ])
@@ -140,7 +134,8 @@ class AccountController extends AbstractController
 
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
-            'form' => $form
+            'form' => $form,
+            'user' => $user
         ]);
     }
 }
