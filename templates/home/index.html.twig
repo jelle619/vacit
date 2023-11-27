@@ -4,28 +4,154 @@
 {% endblock %}
 
 {% block body %}
-	<style></style>
+	<style>
+	body {
+		background-color: var(--orange);
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.showcase {
+		width: 324px;
+		position: relative;
+	}
+
+	.showcase--image {
+		clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+		background-color: var(--gray);
+		background-repeat: no-repeat;
+		background-size: cover;
+		height:270px;
+		width: 324px;
+		flex-shrink: 0;
+	}
+
+	.showcase--text {
+		background-color: var(--gray);
+		text-transform: uppercase;
+		transform: rotate(350deg) translate(0,0);
+		color: white;
+		padding: 0.5rem;
+		display: block;
+		font-size: 1.5rem;
+		margin-left: auto;
+		width: max-content;
+		transform-origin: right bottom;
+		position: absolute;
+		right: -30px;
+		bottom: 40px;
+		max-width: 360px;
+	}
+
+	.showcase--location {
+		background-color: var(--gray);
+		text-transform: uppercase;
+		transform: rotate(350deg) translate(0,0);
+		color: white;
+		padding: 0.5rem;
+		display: block;
+		font-size: 0.8rem;
+		margin-left: auto;
+		width: max-content;
+		transform-origin: right top;
+		position: absolute;
+		right: -30px;
+		bottom: 0;
+		max-width: 360px;
+	}
+
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+
+	.vacancy {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	.vacancy:hover .vacancy--text--name {
+		color: white;
+	}
+
+	.vacancy:hover .vacancy--arrow {
+		filter: invert(100);
+	}
+
+	.vacancy--image {
+		clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+		background-color: var(--gray);
+		background-repeat: no-repeat;
+		background-size: cover;
+		height: 90px;
+		width: 108px;
+		flex-shrink: 0;
+	}
+
+	.vacancy--text {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: 100%;
+	}
+
+	.vacancy--arrow {
+		flex-shrink: 0;
+		height: 60px;
+		filter: brightness(0) saturate(100%) invert(84%) sepia(1%) saturate(0%) hue-rotate(206deg) brightness(97%) contrast(77%);
+	}
+	
+	.vacancy--text--name {
+		display: block;
+		font-size: 1.5rem;
+		color: var(--light-gray);
+	}
+
+	.vacancy--text--summary {
+		display: block;
+		font-style: italic;
+	}
+
+	.vacancy--text--date {
+		display: block;
+	}
+	</style>
 
 	<div class="content">
-		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-			<h1>Hey
-				{{ app.user.firstName }}!</h1>
-		{% else %}
-			<h1>Hallo</h1>
-		{% endif %}
+			<div class="showcase">
+				<div class="showcase--image">
 
-
-		<p>Welkom op onze website. Zie de onderstaande lijst voor uitgelichte vacaturen.</p>
-
-		<ul>
+				</div>
+				<span class="showcase--text">
+					Testestest
+				</span> <br>
+				<span class="showcase--location">
+					Test
+				</span>
+			</div>
+			<div class="list">
 			{% for vacancy in vacancies %}
-				<li>
-					<a href="/vacancy/{{ vacancy.id }}">{{ vacancy.name }}</a>
-					bij
-					{{ vacancy.employer.company.name }}, geplaatst op
-					{{ vacancy.date|date('d/m/Y') }}.</li>
-				{{ vacancy.summary }}
+			<div class="vacancy">
+				<div class="vacancy--image" style="background-image: url('/images/vacancies/{{ vacancy.imageName }}')"></div>
+				<div class="vacancy--text">
+					<small class="vacancy--text--date">{{ vacancy.date|date('d/m/Y') }}</small>
+					<span class="vacancy--text--name">{{ vacancy.name }} voor {{ vacancy.employer.company.name }}</span>
+					<span class="vacancy--text--summary">{{ vacancy.summary }}</span>
+				</div>
+				<img class="vacancy--arrow" height="120" width="120" src="/images/arrow.svg">
+			</div>
 			{% endfor %}
-		</ul>
+			</div>
 	</div>
+
+	<script>
+	</script>
 {% endblock %}

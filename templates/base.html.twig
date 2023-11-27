@@ -23,6 +23,7 @@
                 --orange: #F15A24;
                 --white: #FFF;
                 --black: #000;
+                --light-gray: #BDBDBD;
             }
 
             @font-face {
@@ -51,6 +52,19 @@
 
             h1, h2, h3, h4, h5, h6 {
                 font-family: var(--headings), sans-serif;
+                color: var(--orange);
+		        text-transform: uppercase;
+            }
+
+            label {
+                display: block;
+                color: var(--gray);
+            }
+
+            input[type=text], input[type=email], input[type=password], input[type=tell] {
+                border: none;
+                border-bottom: 2px solid var(--orange);
+                font-size: 1.5rem;
             }
 
             .flash {
