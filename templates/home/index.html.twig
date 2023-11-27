@@ -5,15 +5,21 @@
 
 {% block body %}
 	<style>
-	body {
-		background-color: var(--orange);
-	}
-
 	.content {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		gap: 4rem;
+		background-color: var(--orange);
 	}
+
+	@media only screen and (min-width: 1024px) { /* tailwindcss: max-lg */
+        .content {
+            flex-direction: row;
+			gap: 5em;
+			align-items: flex-start;
+        }
+    }
 
 	.showcase {
 		width: 324px;
@@ -25,7 +31,8 @@
 		background-color: var(--gray);
 		background-repeat: no-repeat;
 		background-size: cover;
-		height:270px;
+		background-position: center;
+		height: 270px;
 		width: 324px;
 		flex-shrink: 0;
 	}
@@ -76,6 +83,8 @@
 		justify-content: space-between;
 		gap: 1rem;
 		align-items: center;
+		text-decoration: none;
+		color: black;
 	}
 
 	.vacancy:hover .vacancy--text--name {
@@ -126,20 +135,20 @@
 	</style>
 
 	<div class="content">
-			<div class="showcase">
-				<div class="showcase--image">
-
+			{% set firstVacancy = vacancies|first %}
+			<a id="showcase" href="/vacancy/{{ firstVacancy.id }}" class="showcase">
+				<div id="showcase--image" class="showcase--image" style="background-image: url('/images/vacancies/{{ firstVacancy.imageName }}')">
 				</div>
-				<span class="showcase--text">
-					Testestest
+				<span id="showcase--text" class="showcase--text">
+					{{ firstVacancy.name }}
 				</span> <br>
-				<span class="showcase--location">
-					Test
+				<span id="showcase--location" class="showcase--location">
+					{{ firstVacancy.employer.company.name }}, {{ firstVacancy.location }}
 				</span>
-			</div>
+			</a>
 			<div class="list">
 			{% for vacancy in vacancies %}
-			<div class="vacancy">
+			<a href="/vacancy/{{ vacancy.id }}" class="vacancy">
 				<div class="vacancy--image" style="background-image: url('/images/vacancies/{{ vacancy.imageName }}')"></div>
 				<div class="vacancy--text">
 					<small class="vacancy--text--date">{{ vacancy.date|date('d/m/Y') }}</small>
@@ -147,11 +156,33 @@
 					<span class="vacancy--text--summary">{{ vacancy.summary }}</span>
 				</div>
 				<img class="vacancy--arrow" height="120" width="120" src="/images/arrow.svg">
-			</div>
+			</a>
 			{% endfor %}
 			</div>
 	</div>
 
 	<script>
+		var vacancies = [];
+
+		{% for vacancy in vacancies %}
+		vacancies.push({
+			"id": {{ vacancy.id }},
+			"name": "{{ vacancy.name }}",
+			"company": "{{ vacancy.employer.company.name }}",
+			"location": "{{ vacancy.location }}",
+			"imageName": "{{ vacancy.imageName }}"
+		})
+		{% endfor %}
+
+		let vacancyIndex = 0;
+
+		setInterval(() => {
+			document.getElementById("showcase").setAttribute("href", "/vacancy/" + vacancies[vacancyIndex]["id"]);
+			document.getElementById("showcase--text").innerHTML = vacancies[vacancyIndex]["name"];
+			document.getElementById("showcase--location").innerHTML = vacancies[vacancyIndex]["company"] + ", " + vacancies[vacancyIndex]["location"];
+			document.getElementById("showcase--image").style.backgroundImage = "url('/images/vacancies/" + vacancies[vacancyIndex]["imageName"] + "')";
+			vacancyIndex++;
+			if (vacancyIndex === vacancies.length) vacancyIndex = 0;
+		}, 5000)
 	</script>
 {% endblock %}

@@ -5,13 +5,65 @@
 
 {% block body %}
 	<style>
-	
+		.content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		.account, input[type='text'], input[type='tel'], input[type=email], input[type=password], textarea {
+			width: 100%;
+		}
+
+		@media only screen and (min-width: 1024px) { /* tailwindcss: max-lg */
+			.content {
+				flex-direction: row;
+				align-items: flex-start;
+				gap: 8rem;
+			}
+    	}
+
+		.avatar {
+			clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+			background-color: var(--gray);
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center; 
+			height:135px;
+			width: 162px;
+			flex-shrink: 0;
+			{% if user.imageName is empty %}
+			background-image: url('/images/user.svg')
+			{% else %}
+			background-image: url('/images/candidates/{{user.imageName}}')
+			{% endif %}
+		}
+
+		#form {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		textarea {
+			height: 8rem;
+			border: 2px solid var(--orange);
+			border-radius: .25rem;
+		}
+
+		label.required:after {
+			content: "*";
+			color: var(--orange);
+		}
 	</style>
 
 	<div class="content">
-		<h1>Profiel</h1>
-
-		{{ form(form) }}
-
+		<div class="avatar">
 		</div>
+		<div class="account">
+		<h1>Profiel</h1>
+		{{ form(form) }}
+		</div>
+	</div>
 	{% endblock %}
