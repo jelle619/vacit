@@ -1,6 +1,12 @@
 ###> user-defined
 /.env
 /.env.test
+/public/images/candidates/*
+/public/images/vacancies/*
+/public/images/employers/*
+/public/files/candidates/*
+/public/files/vacancies/*
+/public/files/employers/*
 
 ###> symfony/framework-bundle ###
 /.env.local
