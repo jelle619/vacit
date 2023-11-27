@@ -115,14 +115,14 @@ class EmployerController extends AbstractController
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => "Afbeelding",
-                'required' => false,
-                'allow_delete' => true,
+                'required' => true,
+                'allow_delete' => false,
                 'delete_label' => 'Verwijder',
                 'download_label' => 'Download',
-                'download_uri' => true,
-                'image_uri' => true,
+                'download_uri' => false,
+                'image_uri' => false,
                 // 'imagine_pattern' => '...',
-                'asset_helper' => true,
+                'asset_helper' => false,
             ])
             ->add('summary', TextareaType::class, [
                 'label' => 'Samenvatting'
@@ -189,16 +189,16 @@ class EmployerController extends AbstractController
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => "Afbeelding",
-                'required' => false,
-                'allow_delete' => true,
+                'required' => true,
+                'allow_delete' => false,
                 'delete_label' => 'Verwijder',
                 'download_label' => 'Download',
-                'download_uri' => true,
-                'image_uri' => true,
+                'download_uri' => false,
+                'image_uri' => false,
                 // 'imagine_pattern' => '...',
-                'asset_helper' => true,
+                'asset_helper' => false,
             ])
-            ->add('summary', TextareaType::class, [
+            ->add('summary', TextType::class, [
                 'label' => 'Samenvatting'
             ])
             ->add('description', TextareaType::class, [
