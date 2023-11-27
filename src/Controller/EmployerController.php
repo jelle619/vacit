@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 use App\Entity\Vacancy;
 
@@ -71,7 +73,7 @@ class EmployerController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $security->getUser();
-        $vacancy = $this->vacancyService->fetchVacancy($vacancyId); 
+        $vacancy = $this->vacancyService->fetchVacancy($vacancyId);
         $submissions = $vacancy->getSubmissions();
 
         if ($vacancy->getEmployer()->getId() != $user->getId()) {
@@ -110,22 +112,33 @@ class EmployerController extends AbstractController
         $form = $this->createFormBuilder($vacancy)
             ->add('name', TextType::class, [
                 'label' => 'Naam'
-                ])
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => "Afbeelding",
+                'required' => false,
+                'allow_delete' => true,
+                'delete_label' => 'Verwijder',
+                'download_label' => 'Download',
+                'download_uri' => true,
+                'image_uri' => true,
+                // 'imagine_pattern' => '...',
+                'asset_helper' => true,
+            ])
             ->add('summary', TextareaType::class, [
                 'label' => 'Samenvatting'
-                ])
+            ])
             ->add('description', TextareaType::class, [
                 'label' => 'Omschrijving'
-                ])
+            ])
             ->add('level', TextType::class, [
                 'label' => 'Level (e.g. Junior/Medior/Senior)'
-                ])
+            ])
             ->add('location', TextType::class, [
                 'label' => 'Locatie'
-                ])
+            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Creëren'
-                ])
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -133,6 +146,7 @@ class EmployerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $vacancy->setEmployer($user);
             $vacancy->setName($form->get('name')->getData());
+            $vacancy->setImageFile($form->get('imageFile')->getData());
             $vacancy->setSummary($form->get('summary')->getData());
             $vacancy->setDescription($form->get('description')->getData());
             $vacancy->setDate(new DateTime());
@@ -145,6 +159,9 @@ class EmployerController extends AbstractController
             $this->addFlash('success', 'Je vacature is aangemaakt en gepubliceerd. Deze is nu terug te vinden in je persoonlijke vacaturelijst.');
             return $this->redirectToRoute('app_employer_vacancy_list');
         }
+
+        // ignore attribute in entry not working, must be set to null to prevent serialization errors
+        $vacancy->setImageFile($form->get('imageFile')->getData());
 
         return $this->render('employer/vacancy/create.html.twig', [
             'controller_name' => 'SubmissionController',
@@ -165,31 +182,44 @@ class EmployerController extends AbstractController
             return $this->redirectToRoute('app_employer_vacancy_list');
         }
 
+         # to prevent the controller from becoming too big, forms should be moved to a seperate file
         $form = $this->createFormBuilder($vacancy)
             ->add('name', TextType::class, [
                 'label' => 'Naam'
-                ])
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => "Afbeelding",
+                'required' => false,
+                'allow_delete' => true,
+                'delete_label' => 'Verwijder',
+                'download_label' => 'Download',
+                'download_uri' => true,
+                'image_uri' => true,
+                // 'imagine_pattern' => '...',
+                'asset_helper' => true,
+            ])
             ->add('summary', TextareaType::class, [
                 'label' => 'Samenvatting'
-                ])
+            ])
             ->add('description', TextareaType::class, [
                 'label' => 'Omschrijving'
-                ])
+            ])
             ->add('level', TextType::class, [
                 'label' => 'Level (e.g. Junior/Medior/Senior)'
-                ])
+            ])
             ->add('location', TextType::class, [
                 'label' => 'Locatie'
-                ])
+            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Wijzigen'
-                ])
+            ])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $vacancy->setName($form->get('name')->getData());
+            $vacancy->setImageFile($form->get('imageFile')->getData());
             $vacancy->setSummary($form->get('summary')->getData());
             $vacancy->setDescription($form->get('description')->getData());
             $vacancy->setLevel($form->get('level')->getData());
@@ -201,6 +231,9 @@ class EmployerController extends AbstractController
             $this->addFlash('success', 'De inhoud van de vacature is succesvol aangepast. De wijzigingen zijn nu voor kandidaten zichtbaar.');
             return $this->redirectToRoute('app_employer_vacancy_list');
         }
+
+        // ignore attribute in entry not working, must be set to null to prevent serialization errors
+        $vacancy->setImageFile($form->get('imageFile')->getData());
 
         return $this->render('employer/vacancy/edit.html.twig', [
             'controller_name' => 'EmployerController',
