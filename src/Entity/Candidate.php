@@ -12,6 +12,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: CandidateRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
@@ -36,8 +42,24 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 32)]
     private ?string $last_name = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $image = null;
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[Vich\UploadableField(mapping: 'candidate', fileNameProperty: 'imageName', size: 'imageSize')]
+    #[Ignore]
+    #[Assert\File(
+        maxSize: '4096k',
+        extensions: ['jpg', 'jpeg', 'png'],
+        extensionsMessage: 'Please upload a valid image (JPEG or PNG)',
+    )]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $imageName = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $imageUpdatedAt = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birth_date = null;
@@ -57,8 +79,24 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cover_letter = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $cv = null;
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[Vich\UploadableField(mapping: 'candidate_cv', fileNameProperty: 'cvName', size: 'cvSize')]
+    #[Ignore]
+    #[Assert\File(
+        maxSize: '4096k',
+        extensions: ['pdf'],
+        extensionsMessage: 'Please upload a valid PDF',
+    )]
+    private ?File $cvFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $cvName = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $cvSize = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $cvUpdatedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'candidate', targetEntity: Submission::class, orphanRemoval: true)]
     private Collection $submissions;
@@ -177,16 +215,49 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getImage()
+        /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
     {
-        return $this->image;
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->imageUpdatedAt = new \DateTimeImmutable();
+        }
     }
 
-    public function setImage($image): static
+    public function getImageFile(): ?File
     {
-        $this->image = $image;
+        return $this->imageFile;
+    }
 
-        return $this;
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
     }
 
     public function getBirthDate(): ?\DateTimeInterface
@@ -261,16 +332,49 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCv()
+   /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setCvFile(?File $cvFile = null): void
     {
-        return $this->cv;
+        $this->cvFile = $cvFile;
+
+        if (null !== $cvFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->cvUpdatedAt = new \DateTimeImmutable();
+        }
     }
 
-    public function setCv($cv): static
+    public function getCvFile(): ?File
     {
-        $this->cv = $cv;
+        return $this->cvFile;
+    }
 
-        return $this;
+    public function setCvName(?string $cvName): void
+    {
+        $this->cvName = $cvName;
+    }
+
+    public function getCvName(): ?string
+    {
+        return $this->cvName;
+    }
+
+    public function setCvSize(?int $cvSize): void
+    {
+        $this->cvSize = $cvSize;
+    }
+
+    public function getCvSize(): ?int
+    {
+        return $this->cvSize;
     }
 
     /**
