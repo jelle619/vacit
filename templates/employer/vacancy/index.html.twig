@@ -4,11 +4,54 @@
 {% endblock %}
 
 {% block body %}
-	<style></style>
+	<style>
+		.content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		.vacancy {
+			width: 100%;
+		}
+
+		@media only screen and (min-width: 1024px) { /* tailwindcss: max-lg */
+			.content {
+				flex-direction: row;
+				align-items: flex-start;
+				gap: 8rem;
+			}
+    	}
+
+		.images--vacancy {
+			clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+			background-color: var(--gray);
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center; 
+			height:135px;
+			width: 162px;
+			flex-shrink: 0;
+			{% if vacancy.imageName is empty %}
+			background-image: url('/images/question-mark.svg');
+			{% else %}
+			background-image: url('/images/vacancies/{{vacancy.imageName}}');
+			{% endif %}
+		}
+	</style>
 
 	<div class="content">
+		<div class="images">
+			<div class="images--vacancy"></div>
+			<div class="images--company"></div>
+		</div>
+
+
+		<div class="vacancy">
 		<small>{{ vacancy.date|date('d/m/Y') }}</small>
 		<h1>{{ vacancy.name }}</h1>
+		<i>{{ vacancy.summary }}</i>
 		<ul>
 			<li>Niveau:
 				{{ vacancy.level }}</li>
@@ -45,6 +88,6 @@
 		{% else %}
 			<p>Je hebt nog geen sollicitaties ontvangen voor deze vacature.
 			{% endif %}
-
+			</div>
 		</div>
 	{% endblock %}
