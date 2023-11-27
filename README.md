@@ -46,3 +46,19 @@ MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
 MAILER_DSN=smtp://username:password@smtp.server.com:465
 ###< symfony/mailer ###
 ```
+
+## Potentiële verbeteringen
+Vac!T is bedoeld als een minimum viable product. Dit betekent dat sommige functies ontbreken, alhoewel o.a. de volgende veiligheidsmaatregelen geïmplementeerd zijn:
+- E-mailverificatie
+- Password hashing
+- Password salting
+- Login throttling
+- CSRF mitigation
+
+De volgende verbeteringen of veranderingen kunnen aangebracht worden om de gebruikerservaring te verbeteren:
+- Een functie om een wachtwoord te resetten.
+- Je profiel wijzigen zonder je wachtwoord dubbel in te vullen.
+- Een manier om bedrijven toe te voegen zonder deze direct in de database aan te maken.
+
+Verder kunnen de volgende wijzigingen aangebracht worden, afhankelijk van de wensen van de klant:
+- CVs en profielfoto's kunnen privé gemaakt worden i.p.v. publiekelijk toegankelijk met de juiste URL.
