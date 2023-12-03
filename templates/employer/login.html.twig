@@ -1,9 +1,23 @@
 {# templates/login/index.html.twig #}
 {% extends 'base.html.twig' %}
 
+{% block title %}Vac!t - Login (Werkgever)
+{% endblock %}
+
 {# ... #}
 
 {% block body %}
+	<style>
+		.form {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		input {
+			width: 100%;
+		}
+	</style>
 	<div class="content">
 		<h1>Login (voor werkgevers)</h1>
 		<p>Deze loginpagina is bedoeld voor werkgevers. Ben je geen werkgever, maar een kandidaat? Ga dan naar de
@@ -13,17 +27,22 @@
 			{% endif %}
 
 			<form action="{{ path('app_employer_login') }}" method="post">
+				<div>
 				<label for="username">E-mail</label>
 				<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="naam@bedrijf.nl">
+				</div>
 
+				<div>
 				<label for="password">Wachtwoord</label>
-				<input type="password" id="password" name="_password" placeholder="********">
+				<input type="password" id="password" name="_password" placeholder="****">
+				</div>
 
 				<input type="hidden" name="_target_path" value="/employer/vacancy/list">
 
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
+				<div>
 				<button type="submit">Log in</button>
+				</div>
 			</form>
 		</p>
 	</div>

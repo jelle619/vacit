@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EmployerController!
+{% block title %}Vac!t - Vacature (Werkgever)
 {% endblock %}
 
 {% block body %}
@@ -73,12 +73,15 @@
 								{{ submission.candidate.lastName }},
 								{{ submission.date|date('d/m/Y') }}</summary>
 							<ul>
-								<li>{{ submission.candidate.email }}</li>
+								<li><a href="mailto:{{ submission.candidate.email }}">{{ submission.candidate.email }}</a></li>
 								<li>{{ submission.candidate.birthDate|date('d/m/Y') }}</li>
-								<li>{{ submission.candidate.phoneNumber }}</li>
+								<li><a href="tel:{{ submission.candidate.phoneNumber }}">{{ submission.candidate.phoneNumber }}</a></li>
 								<li>{{ submission.candidate.address }},
 									{{ submission.candidate.postalCode }}
 									{{ submission.candidate.city }}</li>
+								{% if submission.candidate.cvName is not empty %}
+								<li><a href="/files/candidates/{{ submission.candidate.cvName }}">Download CV</a></li>
+								{% endif %}
 							</ul>
 							<p>{{ submission.candidate.coverLetter }}</p>
 						</details>
