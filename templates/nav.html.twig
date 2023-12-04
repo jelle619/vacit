@@ -34,9 +34,16 @@
 		font-weight: bold;
 	}
 
-	.nav-decoration {
+	.nav-decoration--outer {
+		background-color: white;
+	}
+
+
+	.nav-decoration--inner {
+		clip-path: polygon(0 0, 0% 100%, 100% 0);
 		height: 0;
-		width: 0;
+		width: 100%;
+		background-color: var(--orange);
 	}
 </style>
 
@@ -56,5 +63,6 @@
 		{% endif %}
 	</div>
 </div>
-<div class="nav-decoration">
+<div class="nav-decoration--outer">
+	<div class="nav-decoration--inner"></div>
 </div>

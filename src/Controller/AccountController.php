@@ -54,7 +54,7 @@ class AccountController extends AbstractController
                 'download_label' => 'Download',
                 'download_uri' => false,
                 'image_uri' => false,
-                'asset_helper' => true,
+                'asset_helper' => false,
             ])
             ->add('email', EmailType::class, [
                 'label' => 'E-mail'
@@ -89,11 +89,11 @@ class AccountController extends AbstractController
             ->add('cvFile', VichFileType::class, [
                 'label' => "CV",
                 'required' => false,
-                'allow_delete' => true,
+                'allow_delete' => false,
                 'delete_label' => 'Verwijder',
-                'download_uri' => true,
+                'download_uri' => false,
                 'download_label' => 'Download',
-                'asset_helper' => true,
+                'asset_helper' => false,
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Opslaan'
